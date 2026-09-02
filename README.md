@@ -396,6 +396,34 @@ The detailed report is available in:
 
 - `06_data_quality_report.ipynb`
 
+## Executive Dashboard
+
+The Executive Dashboard provides a one-screen view of collections performance
+and supports the investment decision.
+
+Key dashboard components include:
+
+- Monthly successful recovery trend
+- Recovery performance by risk segment
+- Recovery rate by collection channel
+- Validation of the 11% month-on-month recovery claim
+- Counterfactual assessment of the strategy change
+- Recommendation for the ₹10 Cr investment
+
+### Key Findings
+
+- The 11% month-on-month recovery improvement was not sustained.
+- March was the only month that reached approximately 11% improvement.
+- Channel recovery rates were broadly similar.
+- July showed approximately ₹40.64 lakh incremental recovery versus the
+  counterfactual baseline.
+- The evidence supports a controlled pilot rather than an immediate full
+  ₹10 Cr investment.
+
+The detailed dashboard is available in:
+
+- `07_executive_dashboard.ipynb`
+
 ## Part 5 – Production Analytics Architecture
 
 A production-ready analytics architecture was designed using the following flow:
