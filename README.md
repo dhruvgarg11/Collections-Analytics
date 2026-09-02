@@ -375,9 +375,91 @@ Channel-level analysis indicates that **Voice has the fastest observed payment t
 
 Therefore, the recommended decision is to **pilot investment in Voice with a controlled holdout rather than immediately deploying the full ₹10 Cr**.
 
+## Part 5 – Production Analytics Architecture
+
+A production-ready analytics architecture was designed using the following flow:
+
+**Raw → Staging → Clean → Golden → Feature → Metrics → Dashboard**
+
+### Architecture Layers
+
+- **Raw:** Stores source data as received from operational systems.
+- **Staging:** Standardizes schemas, column names, data types, timestamps, and source identifiers.
+- **Clean:** Applies deduplication, validation, entity resolution, and cleaning rules.
+- **Golden:** Stores trusted datasets used as the analytical source of truth.
+- **Feature:** Creates analytical features for customer, account, agent, campaign, and payment analysis.
+- **Metrics:** Calculates approved business metrics such as recovery amount, recovery rate, and conversion.
+- **Dashboard:** Presents standardized metrics and trends for business and leadership decisions.
+
+### Data Contracts
+
+The production design defines primary keys and important fields for each analytical
+table. Data contracts should enforce uniqueness, required fields, valid foreign keys,
+consistent timestamps, valid monetary amounts, approved status codes, and versioned
+schema changes.
+
+### Data Quality and Monitoring
+
+Automated checks should monitor:
+
+- Primary key uniqueness and null values
+- Foreign key validity
+- Duplicate records
+- Missing values
+- Timestamp and timezone consistency
+- Payment amount validity
+- Status and disposition values
+- Daily row-count anomalies
+- Recovery-rate anomalies
+- Campaign and channel mix changes
+- Pipeline failures and delayed data
+
+### Incremental Processing
+
+The pipeline should use event and ingestion timestamps with source-specific
+watermarks. An overlap window should be used to capture late-arriving records.
+Affected historical periods should be reprocessed when corrections are received.
+
+### Late-Arriving Data and Backfills
+
+Late-arriving records should be loaded according to their event date and affected
+downstream data should be recalculated. Backfills should identify the affected
+period, reprocess the required data, validate the results, and record the reason
+and execution details.
+
+### Data Lineage
+
+The expected lineage is:
+
+**Source Systems → Raw → Staging → Clean → Golden → Feature → Metrics → Dashboard**
+
+Lineage should record source tables, transformations, key relationships, data-quality
+checks, metric logic, processing timestamps, and backfill activity.
+
+### Standard Metric Definitions
+
+- **Recovery Amount:** Sum of successful payment amounts for the selected period.
+- **Successful Payments:** Count of payment records with `payment_status = SUCCESS`.
+- **Paying Accounts:** Number of unique accounts with at least one successful payment.
+- **Recovery Rate:** Paying accounts divided by the defined eligible account population.
+- **Payment Conversion:** Accounts with a successful payment divided by the defined contacted or targeted population.
+- **MoM Recovery Growth:** Percentage change in recovery amount compared with the previous month.
+- **Average Payment Amount:** Total successful recovery amount divided by successful payments.
+
+### Conclusion
+
+The proposed architecture creates a controlled and traceable path from operational
+data to business reporting. It addresses data quality, deduplication, schema changes,
+timestamp handling, late-arriving data, backfills, metric consistency, lineage, and
+monitoring.
+
+The Golden Dataset remains the source of truth for analytical reporting, while the
+Metrics layer provides standardized business KPIs.
+
 ## Notebooks
 
 - `01_data_exploration.ipynb` - Part 1: Data exploration and Golden Dataset preparation
 - `02_data_forensics.ipynb` - Part 2: Data forensics and recovery investigation
 - `03_statistical_investigation.ipynb` - Part 3: Statistical investigation of recovery performance
 - `04_counterfactual_analysis.ipynb` - Part 4: Counterfactual analysis and ₹10 Cr investment recommendation
+- `05_production_analytics_architecture.ipynb` - Part 5: Production analytics architecture
