@@ -375,6 +375,27 @@ Channel-level analysis indicates that **Voice has the fastest observed payment t
 
 Therefore, the recommended decision is to **pilot investment in Voice with a controlled holdout rather than immediately deploying the full ₹10 Cr**.
 
+## Data Quality Report
+
+The Data Quality Report documents the major data quality issues identified
+during the analysis and their potential business impact.
+
+Key issues investigated include:
+
+- Exact duplicate records
+- Duplicate payment records
+- Missing values
+- Timezone inconsistencies
+- Agent identity inconsistencies
+- Payment attribution-window sensitivity
+
+The report documents the detection methodology, treatment applied, business
+impact, and recommended production controls for each issue.
+
+The detailed report is available in:
+
+- `06_data_quality_report.ipynb`
+
 ## Part 5 – Production Analytics Architecture
 
 A production-ready analytics architecture was designed using the following flow:
