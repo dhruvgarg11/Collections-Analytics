@@ -456,6 +456,21 @@ monitoring.
 The Golden Dataset remains the source of truth for analytical reporting, while the
 Metrics layer provides standardized business KPIs.
 
+## SQL Repository
+
+Production-quality SQL queries covering data cleaning, transformations,
+metric calculations, and analytical queries.
+
+The SQL repository is organized into four files:
+
+- `sql/01_data_cleaning.sql` - Data cleaning and validation queries
+- `sql/02_transformations.sql` - Analytical data transformations
+- `sql/03_metric_calculations.sql` - Standard business metric calculations
+- `sql/04_analytical_queries.sql` - Recovery, risk, campaign, channel, agent, vendor, and payment analysis
+
+The SQL queries are designed to be reproducible and aligned with the Golden
+Dataset and the business questions investigated in this assignment.
+
 ## Notebooks
 
 - `01_data_exploration.ipynb` - Part 1: Data exploration and Golden Dataset preparation
