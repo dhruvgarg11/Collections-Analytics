@@ -268,8 +268,116 @@ Mix, cohort, selection and survivorship effects exist to some extent, while no c
 
 Overall, the observed data suggests that the reported 11% improvement should not be treated as a sustained operational improvement without further validation.
 
+## Part 4 – Counterfactual Analysis and Investment Recommendation
+
+The objective of Part 4 was to evaluate whether the observed recovery after the assumed mid-year strategy change was better than the expected recovery under the pre-change baseline.
+
+### 4.1 Strategy Change Assessment
+
+The daily targeting data was analysed for changes in campaign, channel, priority, and targeting status mix.
+
+Key findings:
+
+- 120 unique campaigns were present in each analysed month.
+- Channel shares remained broadly stable at approximately 24–26% per channel.
+- Priority distribution remained broadly stable across months.
+- Targeting status distribution remained broadly stable at approximately 24–26% per status.
+
+No clear structural break in the targeting strategy was identified from these variables.
+
+For the counterfactual analysis, January–June 2026 was treated as the pre-change baseline period and July–August 2026 as the post-change period.
+
+### 4.2 Pre-Change Baseline
+
+Recovery per targeted account was calculated for January–June 2026.
+
+The average pre-change recovery was:
+
+**₹32,330.38 per targeted account**
+
+This value was used as the counterfactual baseline.
+
+### 4.3 July Counterfactual
+
+July 2026 was compared against the pre-change baseline.
+
+| Metric | July 2026 |
+|---|---:|
+| Targeted Accounts | 5,666 |
+| Actual Recovery | ₹18.72 Cr |
+| Expected Recovery | ₹18.32 Cr |
+| Difference | +₹40.64 Lakh |
+| Change vs Counterfactual | +2.22% |
+
+July recovery was approximately 2.22% above the expected recovery based on the pre-change baseline.
+
+This is substantially lower than the claimed 11% improvement.
+
+### 4.4 August Counterfactual
+
+August was also compared with the same baseline.
+
+| Metric | August 2026 |
+|---|---:|
+| Targeted Accounts | 1,566 |
+| Actual Recovery | ₹4.71 Cr |
+| Expected Recovery | ₹5.06 Cr |
+| Difference | -₹35.20 Lakh |
+| Change vs Counterfactual | -6.95% |
+
+August was below the counterfactual baseline. However, August is a partial month, so this result should be treated as indicative rather than a definitive measure of strategy performance.
+
+### 4.5 Channel Analysis
+
+Observed payment timing was compared across the four collection channels.
+
+| Channel | Payments After Interaction | Average Days to Payment | Median Days to Payment |
+|---|---:|---:|---:|
+| VOICE | 11,933 | 43.95 | 33.13 |
+| WHATSAPP | 9,994 | 52.08 | 40.65 |
+| SMS | 8,428 | 56.14 | 44.65 |
+| FIELD | 5,604 | 62.96 | 52.07 |
+
+Voice had the shortest observed time-to-payment among the four channels.
+
+A simple speed score was calculated using Voice as the reference channel:
+
+| Channel | Speed Score |
+|---|---:|
+| VOICE | 100.00 |
+| WHATSAPP | 84.39 |
+| SMS | 78.29 |
+| FIELD | 69.81 |
+
+The channel analysis is descriptive and does not establish causal impact because borrower risk, targeting priority, campaign selection, and other confounding factors were not controlled.
+
+### 4.6 ₹10 Cr Investment Recommendation
+
+Based on the available evidence, Voice should be prioritised as the primary channel for a controlled investment pilot because it has the fastest observed time-to-payment.
+
+However, the analysis does not provide sufficient evidence to allocate the full ₹10 Cr directly to Voice.
+
+Recommended approach:
+
+1. Prioritise Voice for an initial controlled pilot.
+2. Maintain a holdout/control group to measure incremental recovery.
+3. Compare recovery against the pre-change baseline.
+4. Measure incremental recovery, cost per recovered rupee, and ROI.
+5. Scale investment only if the pilot demonstrates statistically and economically meaningful incremental recovery.
+
+### Part 4 Conclusion
+
+The counterfactual analysis does not support the reported 11% improvement as a sustained operational gain.
+
+July showed only a **2.22% uplift** versus the pre-change baseline, while August showed a **6.95% shortfall**, although August is a partial month.
+
+Channel-level analysis indicates that **Voice has the fastest observed payment timing**, making it the strongest candidate for further investment testing.
+
+Therefore, the recommended decision is to **pilot investment in Voice with a controlled holdout rather than immediately deploying the full ₹10 Cr**.
+
 ## Notebooks
 
 - `01_data_exploration.ipynb` - Part 1: Data exploration and Golden Dataset preparation
 - `02_data_forensics.ipynb` - Part 2: Data forensics and recovery investigation
 - `03_statistical_investigation.ipynb` - Part 3: Statistical investigation of recovery performance
+- `04_counterfactual_analysis.ipynb` - Part 4: Counterfactual analysis and ₹10 Cr investment recommendation
