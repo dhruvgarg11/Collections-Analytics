@@ -39,7 +39,7 @@ The cleaned data is stored in the `golden_datasets/` folder.
 
 ## Part 2 - Data Forensics
 
-### 1. Duplicate Payments
+### 2.1. Duplicate Payments
 
 The raw payments table contains duplicate payment records.
 
@@ -49,7 +49,7 @@ The raw payments table contains duplicate payment records.
 
 The duplicate records include SUCCESS, FAILED, PENDING, and REVERSED payment statuses.
 
-### 2. Payment Attribution
+### 2.2. Payment Attribution
 
 Payment attribution was investigated by linking payments to the most recent call for the same account before the payment.
 
@@ -72,7 +72,7 @@ Attribution-window analysis showed:
 
 This indicates that reported recovery can be sensitive to the attribution window used.
 
-### 3. Timezone Problems
+### 2.3. Timezone Problems
 
 A major timezone inconsistency was identified between the timezone stored in the calls table and the timezone configured for the corresponding vendor.
 
@@ -91,7 +91,7 @@ Mismatch patterns included:
 
 The vendor master was therefore treated as the more reliable source for vendor-level timezone mapping.
 
-### 4. Vendor Mapping
+### 2.4. Vendor Mapping
 
 The vendor master contains 15 vendor IDs across 5 vendor names.
 
@@ -101,7 +101,7 @@ Examples include Airtel, Twilio, Knowlarity, TataTele, and Exotel having multipl
 
 Monthly vendor usage from January to July 2026 remained broadly consistent, so no major sudden vendor replacement was identified from call volumes.
 
-### 5. Agent Identity
+### 2.5. Agent Identity
 
 The agents table contains:
 
@@ -119,13 +119,13 @@ For example:
 
 This shows that agent name should not be used as a unique identity key.
 
-### 6. Portfolio Mix
+### 2.6. Portfolio Mix
 
 Monthly portfolio mix was checked using loan type and risk segment.
 
 The monthly mix remained broadly stable, with no major structural shift identified in the analysed period.
 
-### 7. Denominator and Recovery Rate
+### 2.7. Denominator and Recovery Rate
 
 Monthly targeting volume was checked using the daily targeting table.
 
@@ -163,7 +163,113 @@ Successful payment recovery was analysed month by month.
 
 The analysis does not support a consistent 11% month-on-month improvement. Only March 2026 showed approximately 11% month-on-month growth.
 
+## Part 3 – Statistical Investigation
+
+The objective of Part 3 was to determine whether observed recovery changes were driven by operational improvements or by changes in the underlying population.
+
+### 3.1 Mix Effects
+
+Recovery rates were compared across risk segments.
+
+| Risk Segment | Total Accounts | Paid Accounts | Recovery Rate |
+|---|---:|---:|---:|
+| HIGH | 7,552 | 3,300 | 43.70% |
+| LOW | 7,513 | 3,381 | 45.00% |
+| MEDIUM | 7,533 | 3,335 | 44.27% |
+| NPA | 7,402 | 3,268 | 44.15% |
+
+Recovery rates were close across risk segments, ranging from 43.70% to 45.00%. No major mix effect was observed.
+
+### 3.2 Cohort Effects
+
+Accounts were grouped by their opening month and recovery was measured using successful payment history.
+
+Cohort recovery rates ranged approximately from 41.63% to 46.90%, with no clear upward trend across cohorts.
+
+This analysis suggests that cohort composition alone does not explain the claimed 11% month-on-month improvement.
+
+### 3.3 Selection Bias
+
+Targeted and non-targeted accounts were compared.
+
+| Group | Total Accounts | Paid Accounts | Recovery Rate |
+|---|---:|---:|---:|
+| Non-targeted | 6,656 | 2,996 | 45.01% |
+| Targeted | 23,344 | 10,288 | 44.07% |
+
+Targeted accounts had a recovery rate 0.94 percentage points lower than non-targeted accounts.
+
+This indicates a small selection effect, but it is not large enough by itself to explain an 11% improvement.
+
+### 3.4 Survivorship Bias
+
+Final account status was examined to identify whether different account outcomes could materially affect the recovery result.
+
+| Final Status | Recovery Rate |
+|---|---:|
+| ACTIVE | 45.07% |
+| CLOSED | 44.08% |
+| DELINQUENT | 43.94% |
+| NPA | 42.65% |
+| PAID | 44.97% |
+| PTP | 44.67% |
+| WRITEOFF | 44.89% |
+
+Recovery rates varied by final status, with a maximum difference of approximately 2.42 percentage points.
+
+The variation indicates some population effect, but it does not appear large enough to explain an 11% month-on-month improvement.
+
+### 3.5 Simpson's Paradox
+
+Recovery was compared across months and risk segments.
+
+Risk-segment recovery rates varied across months, but the subgroup results did not show a consistent reversal of the overall trend.
+
+Therefore, no clear evidence of Simpson's paradox was identified from the available analysis.
+
+### 3.6 Attribution-Window Bias
+
+The effect of different attribution windows was examined.
+
+| Attribution Window | Attributed Payments |
+|---|---:|
+| 7 days | 8.94% |
+| 14 days | 16.64% |
+| 30 days | 31.45% |
+| 60 days | 49.67% |
+
+Attribution is highly sensitive to the selected time window. Only 8.94% of payments were attributed within 7 days, compared with 49.67% within 60 days.
+
+Therefore, short attribution windows can materially understate campaign impact.
+
+### 3.7 Time-Series Effects
+
+Monthly successful recovery amount was analyzed to identify a sustained month-on-month improvement.
+
+| Month | Recovery Amount | MoM Change |
+|---|---:|---:|
+| Jan 2026 | ₹18.72 Cr | — |
+| Feb 2026 | ₹17.03 Cr | -9.05% |
+| Mar 2026 | ₹18.92 Cr | +11.11% |
+| Apr 2026 | ₹17.52 Cr | -7.38% |
+| May 2026 | ₹18.43 Cr | +5.20% |
+| Jun 2026 | ₹17.59 Cr | -4.60% |
+| Jul 2026 | ₹18.72 Cr | +6.48% |
+
+August was excluded from the trend interpretation because it is a partial month.
+
+The time-series does not show a sustained 11% month-on-month improvement. The approximately 11% increase occurred only in March 2026.
+
+### Part 3 Conclusion
+
+The statistical investigation does not support a consistent 11% month-on-month recovery improvement.
+
+Mix, cohort, selection and survivorship effects exist to some extent, while no clear Simpson's paradox was identified. Attribution results are highly sensitive to the attribution window, and the monthly recovery trend is inconsistent.
+
+Overall, the observed data suggests that the reported 11% improvement should not be treated as a sustained operational improvement without further validation.
+
 ## Notebooks
 
 - `01_data_exploration.ipynb` - Part 1: Data exploration and Golden Dataset preparation
 - `02_data_forensics.ipynb` - Part 2: Data forensics and recovery investigation
+- `03_statistical_investigation.ipynb` - Part 3: Statistical investigation of recovery performance
