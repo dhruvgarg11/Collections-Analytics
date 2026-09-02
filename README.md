@@ -35,7 +35,7 @@ No exact duplicate rows remain in the Golden Dataset.
 
 Missing payment references were not automatically treated as invalid payments because missing reference values were present across different payment statuses.
 
-The cleaned data is stored in the `golden_dataset/` folder.
+The cleaned data is stored in the `golden_datasets/` folder.
 
 ## Part 2 - Data Forensics
 
